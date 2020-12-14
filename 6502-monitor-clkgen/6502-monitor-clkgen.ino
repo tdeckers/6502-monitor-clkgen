@@ -114,9 +114,9 @@ void loop() {
 
     // decode address
     if (address == 0xfffc) {        // init vector 
-      write(0x00);
+      write(0x00FF & ROM_START); // low byte
     } else if (address == 0xfffd) { // init vector 
-      write(0x80);
+      write(ROM_START >> 8);     // high byte
     } else if ( address >= RAM_START && address <= RAM_START + (sizeof(ram) / sizeof(ram[0]))) {
       // includes stack 0x0100 to 0x01ff
       write(ram[address - RAM_START]);
