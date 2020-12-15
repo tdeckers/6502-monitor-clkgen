@@ -5,31 +5,15 @@ const char DATA[] = {39, 41, 43, 45, 47, 49, 51, 53};
 #define TRIGGER 4
 
 // clock frequency
-const int f = 16; // Hz
-
-// 6502 program.
-const char PROGRAM[] = "a9 ff 8d 02 60 a2 00 bd 15 80 8d 00 60 e8 e0 0a f0 f3 4c 07 80 c0 f9 a4 b0 99 92 02 f8 80 90 ";
-                                 
+const int f = 2; // Hz
+                        
 unsigned int ram[1024]; // RAM: we have 1 MB of ram
 const unsigned int RAM_START = 0x0000; // RAM start address
 
-unsigned int rom[1024]; // ROM: we have 1 MB of rom
+// 6502 program.
+unsigned int rom[] = { 0xa9, 0xff, 0x8d, 0x02, 0x60, 0xa2, 0x00, 0xbd, 0x1a, 0x80, 0x8d, 0x00, 0x60, 0xe8, 0x20, 0x18, 0x80, 0xe0, 0x0a, 0xf0, 0xf0, 0x4c, 0x07, 0x80, 0xea, 0x60, 0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 
+                        0x02, 0xf8, 0x80, 0x90,  };
 const unsigned int ROM_START = 0x8000; // ROM start address
-
-// load the program into the rom variable from the PROGRAM variable.
-void loadProgram(char * pData, unsigned int m[]) {
-  unsigned int idx = 0;
-  while(*pData != 0) { // until end of string...
-    
-    if (*pData == ' ') { // if we hit a space, skip it.
-      pData++;
-    }
-
-    // convert double char (e.g. 'e2') into unsigned int
-    unsigned int code = strtoul(pData, &pData, 16);
-    m[idx++] = code;
-  }
-}
 
 void setup() {
   for (int n = 0; n < 16; n += 1) {
@@ -48,7 +32,6 @@ void setup() {
 
   Serial.begin(57600);
   // load program at 
-  loadProgram(PROGRAM, rom);
   Serial.print("ROM size: "); Serial.println(sizeof(rom) / sizeof(rom[0]));
   Serial.print("RAM size: "); Serial.println(sizeof(ram) / sizeof(ram[0]));
 }
