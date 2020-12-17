@@ -100,10 +100,10 @@ void loop() {
       write(0x00FF & ROM_START); // low byte
     } else if (address == 0xfffd) { // init vector 
       write(ROM_START >> 8);     // high byte
-    } else if ( address >= RAM_START && address <= RAM_START + (sizeof(ram) / sizeof(ram[0]))) {
+    } else if ( address >= RAM_START && address <= RAM_START + (sizeof(ram) / sizeof(ram[0]))-1) {
       // includes stack 0x0100 to 0x01ff
       write(ram[address - RAM_START]);
-    } else if ( address >= ROM_START && address <= ROM_START + (sizeof(rom) / sizeof(rom[0]))) {
+    } else if ( address >= ROM_START && address <= ROM_START + (sizeof(rom) / sizeof(rom[0]))-1) {
       write(rom[address - ROM_START]);
     }
     
@@ -125,7 +125,7 @@ void loop() {
     }
 
     // ram writes, includes stack (0x0100-0x01ff)
-    if ( address >= RAM_START && address <= RAM_START + (sizeof(ram) / sizeof(ram[0]))) {
+    if ( address >= RAM_START && address <= RAM_START + (sizeof(ram) / sizeof(ram[0]))-1) {
       unsigned int data = 0;
       for (int n = 0; n < 8; n += 1) {
         int bit = digitalRead(DATA[n]) ? 1 : 0;      
